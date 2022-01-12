@@ -137,8 +137,8 @@ paths:
       tags:
       - Account Management
       x-group-name:  Account Management
-      x-proxy-name:  List Billed Transactions
-      summary: List Billed Transactions
+      x-proxy-name:  List Accounts' Transactions
+      summary: List Accounts' Transactions
       description: Provides transaction detail information from the last billing cycle
       operationId: Transaction LastStatement
       parameters:
@@ -386,8 +386,8 @@ paths:
       - Account Management
       x-group-name:  Account Management
       x-proxy-name:  Inquire Account Balances
-      summary:  Inquire Account Balances
-      description: This service provides the different balances on the account.
+      summary: List Accounts' Transactions
+      description: This service is inquire on the different balances on the account.
       operationId: Account Balances
       parameters:
       - name: X-Correl-Id
@@ -495,14 +495,14 @@ paths:
                 504:
                   $ref: '#/components/examples/504-Errors'
                   
-  /v1/accounts/{accountRelationshipNbr}/transactions/memoPost:
+  /v1/accounts/{accountRelationshipNBR}/transactions/memoPost:
     get:
       tags:
         - Account Management
       x-group-name: Account Management
-      x-proxy-name: List Outstanding Authorizations
-      summary: List Outstanding Authorizations
-      description: This service provides details of the memo-posted authorizations on a given account.
+      x-proxy-name: Inquire Outstanding Authorizations
+      summary: Inquire Outstanding Authorizations
+      description: This service provide details of the memo-posted authorizations on a given account.
       operationId: memoPost
       parameters:
         - name: X-Correl-Id
@@ -542,7 +542,7 @@ paths:
             type: number
             default: 0.0
             example: 600
-        - name: accountRelationshipNbr
+        - name: accountRelationshipNBR
           in: path
           description: Identification number of the Account Base Segment record.
           required: true
@@ -613,14 +613,14 @@ paths:
                 - '504':
                     $ref: '#/components/examples/504-Errors'
   
-  /v1/accounts/{accountRelationshipNbr}/transactions/cycleToDate:
+  /v1/accounts/{accountRelationshipNBR}/transactions/cycleToDate:
     get:
       tags:
         - Account Management
       x-group-name: Account Management
-      x-proxy-name: List Unbilled Transactions
-      summary: List Unbilled Transactions
-      description: This service provides details of the cycle-to-date transactions on a given account.
+      x-proxy-name: Inquire Posted Authorizations
+      summary: Inquire Posted Authorizations
+      description: This service provide details of the cycle-to-date transactions on a given account.
       operationId: cycleToDate
       parameters:
         - name: X-Correl-Id
@@ -660,7 +660,7 @@ paths:
             type: number
             default: 0.0
             example: 600
-        - name: accountRelationshipNbr
+        - name: accountRelationshipNBR
           in: path
           description: Identification number of the Account Base Segment record.
           required: true
@@ -731,6 +731,115 @@ paths:
                 - '504':
                     $ref: '#/components/examples/504-Errors'
   
+  /v1/account/{accountNumber}/creditLimit:
+    put:
+      tags:
+      - Account Management
+      summary: Credit Limit Update
+      description: This service is used to update permanent credit limit.
+      operationId: CreditLimitUpdate
+      x-group-name: Account Management
+      x-proxy-name: Credit Limit Update
+      parameters:
+      - name: X-Correl-Id
+        description: Any correlational text client's may want to send in the request
+          for mapping the response on their side. Any value passed in the request
+          message will be return back as-is in the API response message
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 40.0
+          example: ABC123
+        required: false
+      - name: X-Name
+        description: User’s sign-on name. The value passed in this field will be validated
+          within application for user's authority to consume the requested API
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 20.0
+          example: 00000AUNAB
+        required: true
+      - name: X-context
+        description: A unique random ID assigned to the requestor once authenticated
+          to the First Vision application. Value passed in this field will be used
+          within application to authenticate the valid signed-on user
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 20.0
+          example: 00000AUNAB
+        required: true
+      - name: businessUnit
+        in: query
+        required: true
+        schema:
+          default: 0.0
+          description: "Business Unit - Identification number associated with this\
+            \ Account Base Segment record, the values are 001–998"
+          type: number
+          example: 600
+      - name: accountNumber
+        in: path
+        required: true
+        schema:
+          format: uppercase
+          description: Account Number - Unique Identification numbers of the Account
+          type: string
+          maxLength: 19.0
+          example: 9994588580000000011
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditLimitUpdateReq'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditLimitUpdateResp'
+        "400":
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "401":
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "500":
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "404":
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "503":
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "504":
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+                
 components:
   schemas:
     AccountsBlockUnblockReq:
@@ -1877,6 +1986,46 @@ components:
               effectiveDate:
                 type: string
                 description: Effective date of the transaction.      
+    CreditLimitUpdateReq:
+      type: object
+      required:
+      - creditLimit
+      properties:
+        creditLimit:
+          default: 0.0
+          description: Credit limit of the account
+          type: string
+          example: 50.0
+        creditLimitDate:
+          format: uppercase
+          description: Date on which the current credit limit was assigned.
+          type: string
+          example: ' '
+    CreditLimitUpdateResp:
+      type: object
+      properties:
+        businessUnit:
+          default: 0.0
+          description: "Business Unit - Identification number associated with this Account Base Segment record, the values are 001–998"
+          type: number
+          example: 600
+        creditLimit:
+          default: 0.0
+          description: Credit limit of the account
+          type: string
+          example: 70
+        accountNumber:
+          format: uppercase
+          description: Account Number - Unique Identification numbers of the Account
+          type: string
+          maxLength: 19.0
+          example: 9994588580000000011
+        creditLimitDate:
+          format: uppercase
+          description: Date on which the current credit limit was assigned.
+          type: string
+          example: ' '
+          
     ErrorList:
       type: array
       items:
