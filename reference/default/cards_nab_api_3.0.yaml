@@ -1271,7 +1271,7 @@ components:
           format: uppercase
           example: ' '
           description: Current pin block( Old Pin Block)- The old pin block should be provided, This will be old pin Enter by customer
-        pinOffSet:
+        pinOffset:
           type: number
           example: 0
           description: Current pin block( Old Pin Block)- The old pin block should be provided, This will be old pin Enter by customer
@@ -1287,7 +1287,7 @@ components:
           type: string
           example: ' '
           description: Security signon-valid signon id should be provided
-        signOnName:
+        signonName:
           type: string
           example: ' '
           description: Signon name- valid signin name should be provided
