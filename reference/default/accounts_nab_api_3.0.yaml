@@ -840,7 +840,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorList'
   
-  /v1/accounts/{accountNumber}/directDebitUpdate:
+  /v1/accounts/{accountNumber}/directDebit:
     put:
       tags:
       - Account Management
