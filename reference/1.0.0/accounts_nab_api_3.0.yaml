@@ -839,7 +839,216 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorList'
-                
+  
+  /v1/accounts/{accountNumber}/directDebitUpdate:
+    put:
+      tags:
+      - Account Management
+      summary: Direct Debit Update
+      description: This service is used to amend diret debit options
+      operationId: DirectDebitUpdate
+      x-group-name: Account Management
+      x-proxy-name: Direct Debit Update
+      parameters:
+      - name: X-Correl-Id
+        description: Any correlational text client's may want to send in the request
+          for mapping the response on their side. Any value passed in the request
+          message will be return back as-is in the API response message
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 40.0
+          example: ABC123
+        required: false
+      - name: X-Name
+        description: User’s sign-on name. The value passed in this field will be validated
+          within application for user's authority to consume the requested API
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 20.0
+          example: 00000AUNAB
+        required: true
+      - name: X-context
+        description: A unique random ID assigned to the requestor once authenticated
+          to the First Vision application. Value passed in this field will be used
+          within application to authenticate the valid signed-on user
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 20.0
+          example: 00000AUNAB
+        required: true
+      - name: businessUnit
+        in: query
+        required: true
+        schema:
+          default: 0.0
+          description: "Business Unit - Identification number associated with this\
+            \ Account Base Segment record, the values are 001–998"
+          type: number
+          example: 600
+      - name: accountNumber
+        in: path
+        required: true
+        schema:
+          description: Account Number - Unique Identification numbers of the Account
+          type: string
+          maxLength: 19.0
+          example: 0000000001000000057
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DirectDebitUpdateReq'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectDebitUpdateResp'
+        "400":
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "401":
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "500":
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "404":
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "503":
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "504":
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+    
+    get:
+      tags:
+      - Account Management
+      summary: Direct Debit Detail
+      description: This service is used to get detail for diret debit.
+      operationId: DirectDebitDet
+      x-group-name: Account Management
+      x-proxy-name: Direct Debit Detail
+      parameters:
+      - name: X-Correl-Id
+        description: Any correlational text client's may want to send in the request
+          for mapping the response on their side. Any value passed in the request
+          message will be return back as-is in the API response message
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 40.0
+          example: ABC123
+        required: false
+      - name: X-Name
+        description: User’s sign-on name. The value passed in this field will be validated
+          within application for user's authority to consume the requested API
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 20.0
+          example: 00000AUNAB
+        required: true
+      - name: X-context
+        description: A unique random ID assigned to the requestor once authenticated
+          to the First Vision application. Value passed in this field will be used
+          within application to authenticate the valid signed-on user
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 20.0
+          example: 00000AUNAB
+        required: true
+      - name: businessUnit
+        in: query
+        required: true
+        schema:
+          default: 0.0
+          description: "Business Unit - Identification number associated with this\
+            \ Account Base Segment record, the values are 001–998"
+          type: number
+          example: 600
+      - name: accountNumber
+        in: path
+        required: true
+        schema:
+          description: Account Number - Unique Identification numbers of the Account
+          type: string
+          maxLength: 19.0
+          example: 0000000001000000057
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DirectDebitDetResp'
+        "400":
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "401":
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "500":
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "404":
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "503":
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "504":
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'              
 components:
   schemas:
     AccountsBlockUnblockReq:
@@ -2025,6 +2234,232 @@ components:
           description: Date on which the current credit limit was assigned.
           type: string
           example: ' '
+    DirectDebitUpdateReq:
+      type: object
+      properties:
+        dDPaymentExpiryDate:
+          format: date
+          description: DD Payment Expiry Date - Date on which direct debit processing
+            expires for the account
+          type: string
+          example: 04/11/2021
+        product:
+          default: 0.0
+          type: number
+        dDRoutingBankID:
+          default: 0.0
+          description: DD Routing Bank ID - Dual-use field that accepts a nine-digit
+            routing/transit number (ACH format) or a ten-digit bank ID (non-ACH format)
+            to identify the financial institution to receive direct debit transactions
+            for account payments
+          type: number
+          example: 123456
+        fixedPaymentAmount:
+          description: DD Nominated Type - Code that indicates the type of customer-nominated
+            payment
+          type: string
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 9
+          example: 1
+        paymentRemittanceMethod:
+          description: Payment Remittance Method - Code that indicates the payment
+            remittance method for the account
+          type: string
+          enum:
+          - 0
+          - 1
+          - 2
+          example: 0
+        dDNominatedPaymentAmtorPercentage:
+          default: 0.0
+          description: DD Nominated Payment Amt/% - This field is the amount of direct
+            debit
+          type: number
+          example: 10
+        billingAcctInd:
+          default: 0.0
+          type: number
+        dDAccountNumber:
+          description: DD Account Number - This field is the account number
+          type: string
+          maxLength: 17
+          example: 0000000001000000057
+        dDPaymentStartDate:
+          format: date
+          description: DD Payment Start Date - Date on which direct debit processing
+            starts for the account
+          type: string
+          example: 04/10/2021
+        dDAccountType:
+          description: DD Account Type - This field is a code that indicates the type
+            of account to which the direct debit is sent
+          type: string
+          enum:
+          - D
+          - S
+          example: D
+    DirectDebitUpdateResp:
+      type: object
+      properties:
+        dDPaymentExpiryDate:
+          format: date
+          description: DD Payment Expiry Date - Date on which direct debit processing
+            expires for the account
+          type: string
+          example: 04/11/2021
+        product:
+          default: 0.0
+          type: number
+        businessUnit:
+          default: 0.0
+          description: "Business Unit - Identification number associated with this\
+            \ Account Base Segment record, the values are 001–998"
+          type: number
+          example: 600
+        dDRoutingBankID:
+          default: 0.0
+          description: DD Routing Bank ID - Dual-use field that accepts a nine-digit
+            routing/transit number (ACH format) or a ten-digit bank ID (non-ACH format)
+            to identify the financial institution to receive direct debit transactions
+            for account payments
+          type: number
+          example: 123456
+        fixedPaymentAmount:
+          description: DD Nominated Type - Code that indicates the type of customer-nominated
+            payment
+          type: string
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 9
+          example: 1
+        accountNumber:
+          description: Account Number - Unique Identification numbers of the Account
+          type: string
+          maxLength: 19.0
+          example: 0000000001000000057
+        paymentRemittanceMethod:
+          description: Payment Remittance Method - Code that indicates the payment
+            remittance method for the account
+          type: string
+          enum:
+          - 0
+          - 1
+          - 2
+          example: 0
+        dDNominatedPaymentAmtorPercentage:
+          default: 0.0
+          description: DD Nominated Payment Amt/% - This field is the amount of direct
+            debit
+          type: number
+          example: 10
+        billingAcctInd:
+          default: 0.0
+          type: number
+        dDAccountNumber:
+          description: DD Account Number - This field is the account number
+          type: string
+          maxLength: 17
+          example: 0000000001000000057
+        dDPaymentStartDate:
+          format: date
+          description: DD Payment Start Date - Date on which direct debit processing
+            starts for the account
+          type: string
+          example: 04/10/2021
+        dDAccountType:
+          description: DD Account Type - This field is a code that indicates the type
+            of account to which the direct debit is sent
+          type: string
+          enum:
+          - D
+          - S
+          example: D
+    DirectDebitDetResp:
+      type: object
+      properties:
+        dDPaymentExpiryDate:
+          format: date
+          description: DD Payment Expiry Date - Date on which direct debit processing
+            expires for the account
+          type: string
+          example: 04/11/2021
+        product:
+          default: 0.0
+          type: number
+          example: 600
+        businessUnit:
+          default: 0.0
+          description: Business Unit - Identification number associated with this Account Base Segment record, the values are 001–998
+          type: number
+          example: 600
+        dDRoutingBankID:
+          default: 0.0
+          description: DD Routing Bank ID - Dual-use field that accepts a nine-digit
+            routing/transit number (ACH format) or a ten-digit bank ID (non-ACH format)
+            to identify the financial institution to receive direct debit transactions
+            for account payments
+          type: number
+          example: 123456
+        fixedPaymentAmount:
+          description: DD Nominated Type - Code that indicates the type of customer-nominated
+            payment
+          type: string
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 9
+          example: 1
+        accountNumber:
+          description: Account Number - Unique Identification numbers of the Account
+          type: string
+          maxLength: 19.0
+          example: 0000000001000000057
+        paymentRemittanceMethod:
+          description: Payment Remittance Method - Code that indicates the payment
+            remittance method for the account
+          type: string
+          enum:
+          - 0
+          - 1
+          - 2
+          example: 0
+        dDNominatedPaymentAmtorPercentage:
+          default: 0.0
+          description: DD Nominated Payment Amt/% - This field is the amount of direct
+            debit
+          type: number
+          example: 10
+        billingAcctInd:
+          default: 0.0
+          type: number
+        dDAccountNumber:
+          description: DD Account Number - This field is the account number
+          type: string
+          maxLength: 17
+          example: 0000000001000000057
+        dDPaymentStartDate:
+          format: date
+          description: DD Payment Start Date - Date on which direct debit processing
+            starts for the account
+          type: string
+          example: 04/10/2021
+        dDAccountType:
+          description: DD Account Type - This field is a code that indicates the type
+            of account to which the direct debit is sent
+          type: string
+          enum:
+          - D
+          - S
+          example: D
           
     ErrorList:
       type: array
