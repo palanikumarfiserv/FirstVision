@@ -1046,6 +1046,116 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorList'              
+                
+  /v1/accounts/{accountNumber}/tempCreditLimit:
+    put:
+      tags:
+      - Account Management
+      summary: Update Temp Credit Limit
+      description: This service is used to update temporary credit limit to an account
+      operationId: TempCreditLimitUpdate
+      x-group-name: Account Management
+      x-proxy-name: Update Temp Credit Limit
+      parameters:
+      - name: X-Correl-Id
+        description: Any correlational text client's may want to send in the request
+          for mapping the response on their side. Any value passed in the request
+          message will be return back as-is in the API response message
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 40.0
+          example: ABC123
+        required: false
+      - name: X-Name
+        description: User’s sign-on name. The value passed in this field will be validated
+          within application for user's authority to consume the requested API
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 20.0
+          example: 00000AUNAB
+        required: true
+      - name: X-context
+        description: A unique random ID assigned to the requestor once authenticated
+          to the First Vision application. Value passed in this field will be used
+          within application to authenticate the valid signed-on user
+        in: header
+        schema:
+          minLength: 0.0
+          type: string
+          maxLength: 20.0
+          example: 00000AUNAB
+        required: true
+      - name: businessUnit
+        in: query
+        required: true
+        description: "Business Unit - Identification number associated with this
+            Account Base Segment record, the values are 001–998"
+        schema:
+          default: 0.0
+          type: number
+          example: 600
+      - name: accountNumber
+        in: path
+        required: true
+        description: Account Number - Unique Identification numbers of the Account
+        schema:
+          format: uppercase
+          type: string
+          maxLength: 19.0
+          example: "0006000011000000103"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TempCreditLimitUpdateReq'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TempCreditLimitUpdateResp'
+        "400":
+          description: The request cannot be validated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "401":
+          description: The request was unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "500":
+          description: An unexpected internal server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "404":
+          description: The request resource does not exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "503":
+          description: The service was unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+        "504":
+          description: The request timed out while waiting for a response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorList'
+                
 components:
   schemas:
     AccountsBlockUnblockReq:
@@ -2452,7 +2562,50 @@ components:
           - D
           - S
           example: D
-          
+    TempCreditLimitUpdateReq:
+      type: object
+      properties:
+        temporaryCreditLimitExpiryDate:
+          format: uppercase
+          description: Temporary Credit Limit Expiry Date - Date on which temporary
+            line of credit expires
+          type: string
+          example: 31/10/2022
+        temporaryCreditLimit:
+          default: 0.0
+          description: Temporary Credit Limit - Temporary line of credit for the account
+            in whole monetary units. This amount overrides the credit limit assigned
+            to the account
+          type: string
+          example: 1000
+    TempCreditLimitUpdateResp:
+      type: object
+      required:
+      - temporaryCreditLimitExpiryDate
+      - temporaryCreditLimit
+      properties:
+        temporaryCreditLimitExpiryDate:
+          format: uppercase
+          description: Temporary Credit Limit Expiry Date - Date on which temporary line of credit expires
+          type: string
+          example: 31/10/2022
+        businessUnit:
+          default: 0.0
+          description: Business Unit - Identification number associated with this Account Base Segment record, the values are 001–998
+          type: number
+          example: 600
+        accountNumber:
+          format: uppercase
+          description: Account Number - Unique Identification numbers of the Account
+          type: string
+          maxLength: 19.0
+          example: "0006000011000000103"
+        temporaryCreditLimit:
+          default: 0.0
+          description: Temporary Credit Limit - Temporary line of credit for the account in whole monetary units. This amount overrides the credit limit assigned to the account
+          type: string
+          example: 1000      
+    
     ErrorList:
       type: array
       items:
