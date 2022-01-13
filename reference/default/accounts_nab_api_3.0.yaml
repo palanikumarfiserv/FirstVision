@@ -731,15 +731,15 @@ paths:
                 - '504':
                     $ref: '#/components/examples/504-Errors'
   
-  /v1/account/{accountNumber}/creditLimit:
+  /v1/accounts/{accountNumber}/creditLimit:
     put:
       tags:
       - Account Management
-      summary: Credit Limit Update
+      summary: Update Credit Limit
       description: This service is used to update permanent credit limit.
       operationId: CreditLimitUpdate
       x-group-name: Account Management
-      x-proxy-name: Credit Limit Update
+      x-proxy-name: Update Credit Limit
       parameters:
       - name: X-Correl-Id
         description: Any correlational text client's may want to send in the request
@@ -844,11 +844,11 @@ paths:
     put:
       tags:
       - Account Management
-      summary: Direct Debit Update
+      summary: Update Direct Debit
       description: This service is used to amend diret debit options
       operationId: DirectDebitUpdate
       x-group-name: Account Management
-      x-proxy-name: Direct Debit Update
+      x-proxy-name: Update Direct Debit
       parameters:
       - name: X-Correl-Id
         description: Any correlational text client's may want to send in the request
@@ -898,7 +898,7 @@ paths:
           description: Account Number - Unique Identification numbers of the Account
           type: string
           maxLength: 19.0
-          example: 0000000001000000057
+          example: "0000000001000000057"
       requestBody:
         content:
           application/json:
@@ -951,11 +951,11 @@ paths:
     get:
       tags:
       - Account Management
-      summary: Direct Debit Detail
+      summary: Inquire Direct Debit
       description: This service is used to get detail for diret debit.
       operationId: DirectDebitDet
       x-group-name: Account Management
-      x-proxy-name: Direct Debit Detail
+      x-proxy-name: Inquire Direct Debit
       parameters:
       - name: X-Correl-Id
         description: Any correlational text client's may want to send in the request
@@ -1005,7 +1005,7 @@ paths:
           description: Account Number - Unique Identification numbers of the Account
           type: string
           maxLength: 19.0
-          example: 0000000001000000057
+          example: "0000000001000000057"
       responses:
         "200":
           description: Success
@@ -2287,7 +2287,7 @@ components:
           description: DD Account Number - This field is the account number
           type: string
           maxLength: 17
-          example: 0000000001000000057
+          example: "0000000001000000057"
         dDPaymentStartDate:
           format: date
           description: DD Payment Start Date - Date on which direct debit processing
@@ -2343,7 +2343,7 @@ components:
           description: Account Number - Unique Identification numbers of the Account
           type: string
           maxLength: 19.0
-          example: 0000000001000000057
+          example: "0000000001000000057"
         paymentRemittanceMethod:
           description: Payment Remittance Method - Code that indicates the payment
             remittance method for the account
@@ -2366,7 +2366,7 @@ components:
           description: DD Account Number - This field is the account number
           type: string
           maxLength: 17
-          example: 0000000001000000057
+          example: "0000000001000000057"
         dDPaymentStartDate:
           format: date
           description: DD Payment Start Date - Date on which direct debit processing
@@ -2422,7 +2422,7 @@ components:
           description: Account Number - Unique Identification numbers of the Account
           type: string
           maxLength: 19.0
-          example: 0000000001000000057
+          example: "0000000001000000057"
         paymentRemittanceMethod:
           description: Payment Remittance Method - Code that indicates the payment
             remittance method for the account
@@ -2445,7 +2445,7 @@ components:
           description: DD Account Number - This field is the account number
           type: string
           maxLength: 17
-          example: 0000000001000000057
+          example: "0000000001000000057"
         dDPaymentStartDate:
           format: date
           description: DD Payment Start Date - Date on which direct debit processing
