@@ -2205,11 +2205,6 @@ components:
           description: Credit limit of the account
           type: string
           example: 50.0
-        creditLimitDate:
-          format: uppercase
-          description: Date on which the current credit limit was assigned.
-          type: string
-          example: ' '
     CreditLimitUpdateResp:
       type: object
       properties:
