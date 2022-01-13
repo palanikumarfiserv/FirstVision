@@ -776,18 +776,17 @@ paths:
       - name: businessUnit
         in: query
         required: true
+        description: "Business Unit - Identification number associated with this Account Base Segment record, the values are 001–998"
         schema:
           default: 0.0
-          description: "Business Unit - Identification number associated with this\
-            \ Account Base Segment record, the values are 001–998"
           type: number
           example: 600
       - name: accountNumber
         in: path
         required: true
+        description: Account Number - Unique Identification numbers of the Account
         schema:
           format: uppercase
-          description: Account Number - Unique Identification numbers of the Account
           type: string
           maxLength: 19.0
           example: 9994588580000000011
@@ -885,17 +884,16 @@ paths:
       - name: businessUnit
         in: query
         required: true
+        description: "Business Unit - Identification number associated with this Account Base Segment record, the values are 001–998"
         schema:
           default: 0.0
-          description: "Business Unit - Identification number associated with this\
-            \ Account Base Segment record, the values are 001–998"
           type: number
           example: 600
       - name: accountNumber
         in: path
         required: true
+        description: Account Number - Unique Identification numbers of the Account
         schema:
-          description: Account Number - Unique Identification numbers of the Account
           type: string
           maxLength: 19.0
           example: "0000000001000000057"
@@ -992,17 +990,16 @@ paths:
       - name: businessUnit
         in: query
         required: true
+        description: "Business Unit - Identification number associated with this Account Base Segment record, the values are 001–998"
         schema:
           default: 0.0
-          description: "Business Unit - Identification number associated with this\
-            \ Account Base Segment record, the values are 001–998"
           type: number
           example: 600
       - name: accountNumber
         in: path
         required: true
+        description: Account Number - Unique Identification numbers of the Account
         schema:
-          description: Account Number - Unique Identification numbers of the Account
           type: string
           maxLength: 19.0
           example: "0000000001000000057"
